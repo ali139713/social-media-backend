@@ -13,6 +13,11 @@ class Post(BaseModel):
 
 my_posts = [{"id": 1, "title": "title of post 1", "content": "content of post 1"}, {"id": 2, "title": "My Favourite Food", "content": "pizza"}]
 
+def find_post(id):
+    for post in my_posts:
+        if post["id"] == id:
+            return post 
+
 @app.get("/")
 def root():
     return {"message":"Hello World"}
@@ -29,6 +34,6 @@ def create_post(post: Post):
     return {"data": post_dict}
 
 @app.get("/post/{id}")
-def get_post(id):
-    print(id)
-    return {"data": f"Here is the post with id {id}"}
+def get_post(id: int):
+    post = find_post(id)
+    return {"data": post}
