@@ -56,12 +56,11 @@ def get_post(id: int):
     return {"data": post}
 
 
-@app.post("/createpost", status_code=status.HTTP_201_CREATED)
+@app.post("/posts", status_code=status.HTTP_201_CREATED)
 def create_post(post: Post):
-    post_dict = dict(post)
-    post_dict["id"] = randrange(0, 100000)
-    my_posts.append(post_dict)    
-    return {"data": post_dict}
+        cursor.execute(""" INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * """, (post.title, post.content, post.published))
+        new_post = cursor.fetchone()
+        return {"data": new_post}
 
 @app.put("/post/{id}")
 def update_post(id:int, post:Post):
