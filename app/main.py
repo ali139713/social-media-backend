@@ -60,6 +60,7 @@ def get_post(id: int):
 def create_post(post: Post):
         cursor.execute(""" INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * """, (post.title, post.content, post.published))
         new_post = cursor.fetchone()
+        conn.commit()
         return {"data": new_post}
 
 @app.put("/post/{id}")
