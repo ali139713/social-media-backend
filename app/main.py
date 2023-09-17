@@ -5,6 +5,17 @@ from fastapi import FastAPI, HTTPException, Response, status
 from pydantic import BaseModel
 import psycopg2
 from psycopg2.extras import RealDictCursor
+from . import models
+from .database import SessionLocal, engine
+
+models.Base.metadata.create_all(bind=engine)
+
+def get_db():
+     db= SessionLocal()
+     try:
+          yield db
+     finally:
+          db.close()
 
 app = FastAPI()
 
